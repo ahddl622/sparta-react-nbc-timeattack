@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
-import { TodoContext } from "../../context/TodoContext";
+import { defaultTodos } from "../../static/todos";
 
 const TodoController = () => {
-  const {todos, setTodos} = useContext(TodoContext)
-  
+  const [todos, setTodos] = useState(defaultTodos);
   const [sortOrder, setSortOrder] = useState("asc");
 
-  
+  const onSubmitTodo = (nextTodo) => {
+    setTodos((prevTodos) => [nextTodo, ...prevTodos]);
+  };
 
   const onDeleteTodoItem = (id) => {
     // SECTION: 2-1번 문제
@@ -49,7 +50,7 @@ const TodoController = () => {
       // HINT: `new Date(todo.limit)`을 사용하여 정렬
 
       setTodos((prevTodos) =>
-        [...prevTodos].sort((a, b) => new Date(a.limit) - new Date(b.limit))
+        [...prevTodos].sort((a, b) => new Date(b.limit) - new Date(a.limit))
       );
       return;
     }
@@ -59,7 +60,7 @@ const TodoController = () => {
     // NOTE: sort 메서드를 사용하여 `limit`을 기준으로 내림차순 정렬 후 setTodos로 업데이트
     // HINT: `new Date(todo.limit)`을 사용하여 정렬
     setTodos((prevTodos) =>
-      [...prevTodos].sort((a, b) => new Date(b.limit) - new Date(a.limit))
+      [...prevTodos].sort((a, b) => new Date(a.limit) - new Date(b.limit))
     );
   }, [sortOrder]);
 
